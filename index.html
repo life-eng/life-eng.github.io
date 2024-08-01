@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二択ゲーム</title>
+    <title>逕溘″谿九ｋ莠ｺ</title>
     <style>
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+         　 font-family: "MS P明朝", "MS 明朝", serif; /* MS P明朝を優先、次にMS 明朝、最後にserif系フォント */
             background-color: #1a1a1a;
             color: #ffffff;
             display: flex;
@@ -67,8 +67,8 @@
         document.addEventListener("DOMContentLoaded", () => {
             const choiceArea = document.getElementById("choiceArea");
             const choices = [
-                { text: "選択肢 1", details: "選択肢1の詳細説明" },
-                { text: "選択肢 2", details: "選択肢2の詳細説明" }
+                { text: "逕溘″繧", details: "縺ゅ↑縺溘?螟ｧ蛻?↑莠ｺ縺梧ｭｻ縺ｬ" },
+                { text: "豁ｻ縺ｬ", details: "縺ゅ↑縺溘?螟ｧ蛻?↑莠ｺ縺ｯ逕溘″繧" }
             ];
 
             // より厳密なフィンガープリントを取得
@@ -107,7 +107,7 @@
                 const visitorId = CryptoJS.SHA256(values.join('')).toString();
 
                 if (localStorage.getItem(visitorId)) {
-                    choiceArea.innerHTML = "<p>あなたはすでに選択済みです。</p>";
+                    choiceArea.innerHTML = "<p>莠悟屓逶ｮ縺ｯ縺ゅｊ縺ｾ縺帙ｓ</p>";
                 } else {
                     choices.forEach((choice, index) => {
                         const choiceElement = document.createElement("div");
@@ -122,7 +122,7 @@
                         // クリックイベントリスナーを追加
                         choiceElement.addEventListener("click", () => {
                             localStorage.setItem(visitorId, choice.text); // 選択した選択肢を記録
-                            choiceArea.innerHTML = `<p>あなたは「${choice.text}」を選択しました。</p>`;
+                            choiceArea.innerHTML = `<p>縺ゅ↑縺溘?「${choice.text}」繧帝∈謚槭＠縺ｾ縺励◆</p>`;
                         });
                     });
                 }
