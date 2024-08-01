@@ -1,133 +1,139 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>逕溘″谿九ｋ莠ｺ</title>
-    <style>
-        body {
-         　 font-family: "MS P明朝", "MS 明朝", serif; /* MS P明朝を優先、次にMS 明朝、最後にserif系フォント */
-            background-color: #1a1a1a;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #choiceArea {
-            display: flex;
-            gap: 30px;
-        }
-
-        .choice {
-            padding: 20px 40px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 8px;
-            position: relative;
-            background-color: #333;
-            border: 2px solid #555;
-            transition: all 0.3s ease;
-        }
-
-        .choice:hover {
-            background-color: #555;
-            border-color: #777;
-        }
-
-        .details {
-            display: none;
-            position: absolute;
-            bottom: -70px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px;
-            background-color: #222;
-            border-radius: 5px;
-            border: 1px solid #444;
-            width: 200px;
-            text-align: left;
-            z-index: 10;
-            font-size: 14px;
-            color: #ddd;
-        }
-
-        .choice:hover .details {
-            display: block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>逕溘″谿九ｋ莠ｺ</title>
+  <style>
+    body {
+      font-family: "MS P明朝", "MS 明朝", serif; 
+      background-color: #1a1a1a;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #choiceArea {
+      display: flex;
+      gap: 30px;
+    }
+    .choice {
+      padding: 20px 40px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      position: relative;
+      background-color: #333;
+      border: 2px solid #555;
+      transition: all 0.3s ease;
+    }
+    .choice:hover {
+      background-color: #555;
+      border-color: #777;
+    }
+    .details {
+      display: none;
+      position: absolute;
+      bottom: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      background-color: #222;
+      border-radius: 5px;
+      border: 1px solid #444;
+      width: 200px;
+      text-align: left;
+      z-index: 10;
+      font-size: 14px;
+      color: #ddd;
+    }
+    .choice:hover .details {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <div id="choiceArea"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.0/fingerprint2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const choiceArea = document.getElementById("choiceArea");
-            const choices = [
-                { text: "逕溘″繧", details: "縺ゅ↑縺溘?螟ｧ蛻?↑莠ｺ縺梧ｭｻ縺ｬ" },
-                { text: "豁ｻ縺ｬ", details: "縺ゅ↑縺溘?螟ｧ蛻?↑莠ｺ縺ｯ逕溘″繧" }
-            ];
+  <div id="choiceArea"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.0/fingerprint2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const choiceArea = document.getElementById("choiceArea");
+      const choices = [
+        { text: "逕溘″繧", details: "縺ゅ↑縺溘?螟ｧ蛻?↑莠ｺ縺梧ｭｻ縺ｬ" },
+        { text: "豁ｻ縺ｬ", details: "縺ゅ↑縺溘?螟ｧ蛻?↑莠ｺ縺ｯ逕溘″繧" }
+      ];
 
-            // より厳密なフィンガープリントを取得
-            Fingerprint2.getPromise({
-                excludes: {
-                    userAgent: true, // ユーザーエージェントを除外 (ブラウザ間の違いを無視)
-                    language: true,  // 言語を除外
-                    colorDepth: true, // 色深度を除外
-                    pixelRatio: true, // ピクセル比を除外
-                    timezoneOffset: true, // タイムゾーンオフセットを除外
-                    sessionStorage: true, // セッションストレージを除外
-                    localStorage: true, // ローカルストレージを除外
-                    indexedDb: true, // IndexedDBを除外
-                    addBehavior: true, // addBehaviorを除外
-                    openDatabase: true, // openDatabaseを除外
-                    cpuClass: true, // CPUクラスを除外
-                    platform: true, // プラットフォームを除外
-                    doNotTrack: true, // doNotTrackを除外
-                    canvas: true, // canvasを除外
-                    webgl: true, // WebGLを除外
-                    webglVendorAndRenderer: true, // WebGLベンダーとレンダラーを除外
-                    adBlock: true, // アドブロックを除外
-                    hasLiedLanguages: true, // 偽装言語を除外
-                    hasLiedResolution: true, // 偽装解像度を除外
-                    hasLiedOs: true, // 偽装OSを除外
-                    hasLiedBrowser: true, // 偽装ブラウザを除外
-                    touchSupport: true, // タッチサポートを除外
-                    fonts: true, // フォントを除外
-                    fontsFlash: true, // Flashフォントを除外
-                    audio: true, // オーディオを除外
-                    enumerateDevices: true // デバイス列挙を除外
-                }
-            }).then(components => {
-                // ハッシュ化してキーを生成 (個人情報保護のため)
-                const values = components.map(component => component.value);
-                const visitorId = CryptoJS.SHA256(values.join('')).toString();
+      // より厳密なフィンガープリントを取得
+      Fingerprint2.getPromise({
+        excludes: {
+          userAgent: true, 
+          language: true,  
+          colorDepth: true, 
+          pixelRatio: true, 
+          timezoneOffset: true,
+          sessionStorage: true, 
+          localStorage: true, 
+          indexedDb: true, 
+          addBehavior: true, 
+          openDatabase: true, 
+          cpuClass: true, 
+          platform: true, 
+          doNotTrack: true, 
+          canvas: true, 
+          webgl: true, 
+          webglVendorAndRenderer: true, 
+          adBlock: true, 
+          hasLiedLanguages: true, 
+          hasLiedResolution: true, 
+          hasLiedOs: true, 
+          hasLiedBrowser: true, 
+          touchSupport: true, 
+          fonts: true, 
+          fontsFlash: true, 
+          audio: true, 
+          enumerateDevices: true 
+        }
+      }).then(components => {
+        // ハッシュ化してキーを生成 (個人情報保護のため)
+        const values = components.map(component => component.value);
+        const visitorId = CryptoJS.SHA256(values.join('')).toString();
 
-                if (localStorage.getItem(visitorId)) {
-                    choiceArea.innerHTML = "<p>莠悟屓逶ｮ縺ｯ縺ゅｊ縺ｾ縺帙ｓ</p>";
-                } else {
-                    choices.forEach((choice, index) => {
-                        const choiceElement = document.createElement("div");
-                        choiceElement.id = `choice${index + 1}`;
-                        choiceElement.classList.add("choice");
-                        choiceElement.innerHTML = `
-                            ${choice.text}
-                            <div class="details">${choice.details}</div>
-                        `;
-                        choiceArea.appendChild(choiceElement);
+        if (localStorage.getItem(visitorId)) {
+          // 二回目以降のアクセス
+          let alertCount = 0;
+          const maxAlertCount = 5;
+          let alertInterval;
 
-                        // クリックイベントリスナーを追加
-                        choiceElement.addEventListener("click", () => {
-                            localStorage.setItem(visitorId, choice.text); // 選択した選択肢を記録
-                            choiceArea.innerHTML = `<p>縺ゅ↑縺溘?「${choice.text}」繧帝∈謚槭＠縺ｾ縺励◆</p>`;
-                        });
-                    });
-                }
+          alertInterval = setInterval(() => {
+            alert("莠悟屓逶ｮ縺ｯ縺ゅｊ縺ｾ縺帙ｓ");
+            alertCount++;
+            if (alertCount >= maxAlertCount) {
+              clearInterval(alertInterval);
+            }
+          }, 1000); 
+        } else {
+          choices.forEach((choice, index) => {
+            const choiceElement = document.createElement("div");
+            choiceElement.id = `choice${index + 1}`;
+            choiceElement.classList.add("choice");
+            choiceElement.innerHTML = `
+              ${choice.text}
+              <div class="details">${choice.details}</div>
+            `;
+            choiceArea.appendChild(choiceElement);
+
+            // クリックイベントリスナーを追加
+            choiceElement.addEventListener("click", () => {
+              localStorage.setItem(visitorId, choice.text); // 選択した選択肢を記録
+              choiceArea.innerHTML = `<p>縺ゅ↑縺溘?「${choice.text}」繧帝∈謚槭＠縺ｾ縺励◆</p>`;
             });
-        });
-    </script>
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
