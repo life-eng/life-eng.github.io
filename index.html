@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>逕溘″谿九ｋ莠ｺ</title>
+  <title>Your Choice</title>
   <style>
     body {
       font-family: "MS P明朝", "MS 明朝", serif; /* 日本語フォントは変更なし */
@@ -118,7 +118,7 @@
         if (localStorage.getItem(visitorId)) {
           // 二回目以降のアクセス
           let alertCount = 0;
-          const maxAlertCount = 5;
+          const maxAlertCount = 2;
           let alertInterval;
 
           alertInterval = setInterval(() => {
@@ -128,7 +128,7 @@
               clearInterval(alertInterval);
             }
           }, 1000); 
-          garbledText.textContent = "莠悟屓逶ｮ縺ｯ縺ゅｊ縺ｾ縺帙ｓ";
+          garbledText.textContent = "you have already made a decision";
         } else {
           choices.forEach((choice, index) => {
             const choiceElement = document.createElement("div");
@@ -151,7 +151,7 @@
               choiceArea.innerHTML = `<p>You have selected "${choice.text}".</p>`;
             });
           });
-          garbledText.textContent = "逕溘″繧\n豁ｻ縺ｬ"; 
+          garbledText.textContent = "you have already made a decision"; 
         }
       });
     });
