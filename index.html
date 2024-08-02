@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Choice</title>
+  <style>
+    body {
+      font-family: "MS P明朝", "MS 明朝", serif;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #choiceArea {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    .choice {
+      padding: 20px 40px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      position: relative;
+      background-color: #333;
+      border: 2px solid #555;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .choice.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .choice:hover {
+      background-color: #555;
+      border-color: #777;
+    }
+    .details {
+      display: none;
+      position: absolute;
+      bottom: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      background-color: #222;
+      border-radius: 5px;
+      border: 1px solid #444;
+      width: 200px;
+      text-align: left;
+      z-index: 10;
+      font-size: 14px;
+      color: #ddd;
+    }
+    .choice:hover .details {
+      display: block;
+    }
+    #garbledText {
+      font-size: 14px;
+      color: #777;
+    }
+    #messageContainer {
+      display: none;
+      overflow: hidden;
+      transition: height 1s ease;
+    }
+    .messageLine {
+      font-size: 18px;
+      margin-bottom: 5px;
+      transform: translateY(100%);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .messageLine.show {
+      transform: translateY(0);
+    }
+    .messageLine.hide {
+      opacity: 0;
+    }
+    .japaneseTranslation {
+      font-size: 14px;
+      color: #aaa;
+    }
+    #credits {
+      font-size: 12px;
+      color: #777;
+      margin-top: 20px;
+      transform: translateY(100%);
+      transition: transform 1s ease;
+    }
+    #credits.show {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="choiceArea"></div>
+  <div id="garbledText"></div>
+  <button id="showButton" style="display: none;">===</button>
+  <div id="messageContainer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.0/fingerprint2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const choiceArea = document.getElementById("choiceArea");
+      const garbledText = document.getElementById("garbledText");
+      const choices = [
+        { text: "Choice A", details: "You have already made your choice." },
+        { text: "Choice B", details: "You cannot change your selection." }
+      ];
+
+      Fingerprint2.getPromise({
+        excludes: {
+          userAgent: true,
+          language: true,
+          colorDepth: true,
+          pixelRatio: true,
+          timezoneOffset: true,
+          sessionStorage: true,
+          localStorage: true,
+          indexedDb: true,
+          addBehavior: true,
+          openDatabase: true,
+          cpuClass: true,
+          platform: true,
+          doNotTrack: true,
+          canvas: true,
+          webgl: true,
+          webglVendorAndRenderer: true,
+          adBlock: true,
+          hasLiedLanguages: true,
+          hasLiedResolution: true,
+          hasLiedOs: true,
+          hasLiedBrowser: true,
+          touchSupport: true,
+          fonts: true,
+          fontsFlash: true,
+          audio: true,
+          enumerateDevices: true
+        }
+      }).then(components => {
+        const values = components.map(component => component.value);
+        const visitorId = CryptoJS.SHA256(values.join('')).toString();
+
+        if (localStorage.getItem(visitorId)) {
+          document.getElementById("showButton").style.display = "block";
+
+          document.getElementById("showButton").addEventListener("click", () => {
+            document.getElementById("showButton").style.display = "none";
+            
+            const messageContainer = document.getElementById("messageContainer");
+            const messages = [
+              { en: "The path you've chosen is set.", ja: "あなたが選んだ道は定められています。" },
+              { en: "There is no turning back now.", ja: "もう後戻りはできません。" },
+              { en: "Embrace your destiny.", ja: "あなたの運命を受け入れてください。" },
+              { en: "Your fate is sealed.", ja: "あなたの運命は決まっています。" },
+              { en: "No second chances.", ja: "二度目はありません。" },
+              { en: "Walk the path ahead.", ja: "前に進む道を歩んでください。" },
+              { en: "Your choice will ripple through time.", ja: "あなたの選択は、時を越えて波紋を広げるでしょう。" },
+              { en: "Even small decisions shape the future.", ja: "どんなに小さな選択でも、未来に大きな影響を与えます。" },
+              { en: "A single moment can alter fate.", ja: "何気ない瞬間が、運命を変えることがあります。" },
+              { en: "The path you've chosen leads to unknown possibilities.", ja: "あなたが選んだ道は、未知の可能性へと続いています。" },
+              { en: "One choice can change everything.", ja: "たった一つの選択が、全てを変えることがあるのです。" },
+              { en: "Your future hinges on this very moment.", ja: "未来は、今この瞬間の選択にかかっています。" },
+              { en: "Every choice is a crossroads; tread carefully.", ja: "選択は人生の分岐点であり、慎重に進みましょう。" },
+              { en: "Even the smallest choices can have great outcomes.", ja: "小さな選択が、大きな結果を生むことを忘れないでください。" },
+              { en: "Whichever path you choose, it shapes your life.", ja: "どんな道を選んでも、それがあなたの人生を形作ります。" }
+            ];
+
+            messageContainer.innerHTML = "";
+            messageContainer.style.display = "block";
+
+            let currentMessageIndex = 0;
+
+            function showNextMessage() {
+              if (currentMessageIndex >= messages.length) {
+                const credits = document.createElement("div");
+                credits.id = "credits";
+                credits.textContent = "Created by [あなたの名前]";
+                messageContainer.appendChild(credits);
+
+                setTimeout(() => {
+                  credits.classList.add("show");
+                }, 1000); 
+                return;
+              }
+              
+              const msg = messages[currentMessageIndex];
+              const messageLine = document.createElement("div");
+              messageLine.classList.add("messageLine");
+              messageLine.innerHTML = `<div>${msg.en}</div><div class="japaneseTranslation">${msg.ja}</div>`;
+              messageContainer.appendChild(messageLine);
+
+              setTimeout(() => {
+                messageLine.classList.add("show");
+              }, 100);
+
+              setTimeout(() => {
+                messageLine.classList.remove("show");
+                messageLine.classList.add("hide");
+
+                setTimeout(() => {
+                  messageContainer.removeChild(messageLine);
+                  currentMessageIndex++;
+                  showNextMessage();
+                }, 500);
+              }, 7000);
+            }
+
+            showNextMessage();
+          });
+        } else {
+          choices.forEach((choice, index) => {
+            const choiceElement = document.createElement("div");
+            choiceElement.id = `choice${index + 1}`;
+            choiceElement.classList.add("choice");
+            choiceElement.innerHTML = `
+              ${choice.text}
+              <div class="details">${choice.details}</div>
+            `;
+            choiceArea.appendChild(choiceElement);
+
+            setTimeout(() => {
+              choiceElement.classList.add("show");
+            }, 200 * index);
+
+            choiceElement.addEventListener("click", () => {
+              localStorage.setItem(visitorId, choice.text);
+              choiceArea.innerHTML = `<p>You have selected "${choice.text}".</p>`;
+            });
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
