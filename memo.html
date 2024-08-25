@@ -37,45 +37,37 @@
       background-color: #555;
     }
 
-    .container {
-      display: flex;
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 20px;
-    }
-
     .memo-list {
-      width: 200px;
-      border-right: 1px solid #ccc;
-      padding-right: 20px;
-    }
-
-    .memo-list ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
+      display: flex;
+      overflow-x: auto;
+      padding: 10px;
+      background-color: #f1f1f1;
     }
 
     .memo-list li {
-      padding: 8px;
-      cursor: pointer;
+      background-color: #fff;
+      padding: 10px;
+      margin-right: 10px;
       border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
     .memo-list li.personal {
-      background-color: #f2f2f2;
+      border-left: 4px solid #e6f2ff;
     }
 
     .memo-list li.work {
-      background-color: #e6f2ff;
+      border-left: 4px solid #f2e6ff;
     }
 
     .memo-list li.family {
-      background-color: #f2e6ff;
+      border-left: 4px solid #f2f2f2;
     }
 
     .memo-form {
-      flex-grow: 1;
+      max-width: 800px;
+      margin: 20px auto;
       border: 1px solid #ccc;
       padding: 20px;
       border-radius: 4px;
@@ -96,7 +88,7 @@
     }
 
     .memo-form textarea {
-      height: 300px;
+      height: 200px;
       resize: vertical;
     }
 
@@ -121,44 +113,43 @@
     <a href="index.html" class="logout-button">Logout</a>
   </header>
 
-  <div class="container">
-    <div class="memo-list">
-      <ul id="memoList"></ul>
-    </div>
+  <div class="memo-list" id="memoList"></div>
 
-    <div class="memo-form">
-      <h2>New Memo</h2>
-      <input type="text" id="titleInput" placeholder="Title" required>
-      <select id="categorySelect">
-        <option value="personal">Personal</option>
-        <option value="work">Work</option>
-        <option value="family">Family</option>
-      </select>
-      <textarea id="memoInput" placeholder="Enter your memo here..." required></textarea>
-      <button onclick="saveAndDisplayMemo()">Save</button>
-    </div>
+  <div class="memo-form">
+    <h2>New Memo</h2>
+    <input type="text" id="titleInput" placeholder="Title" required>
+    <textarea id="memoInput" placeholder="Enter your memo here..." required></textarea>
+    <select id="categorySelect">
+      <option value="personal">Personal</option>
+      <option value="work">Work</option>
+      <option value="family">Family</option>
+    </select>
+    <button onclick="saveAndDisplayMemo()">Save</button>
   </div>
 
   <script>
     function saveAndDisplayMemo() {
       const titleInput = document.getElementById('titleInput');
-      const categorySelect = document.getElementById('categorySelect');
       const memoInput = document.getElementById('memoInput');
+      const categorySelect = document.getElementById('categorySelect');
 
-      const title = titleInput.value;
+      const title = titleInput.value.trim();
+      const memo = memoInput.value.trim();
       const category = categorySelect.value;
-      const memo = memoInput.value;
 
-      saveMemo(title, category, memo);
-      displayMemos();
+      if (title && memo) {
+        const currentDate = new Date().toLocaleString();
+        saveMemo(title, memo, category, currentDate);
+        displayMemos();
 
-      titleInput.value = '';
-      memoInput.value = '';
+        titleInput.value = '';
+        memoInput.value = '';
+      }
     }
 
-    function saveMemo(title, category, memo) {
+    function saveMemo(title, memo, category, timestamp) {
       const memos = JSON.parse(localStorage.getItem('memos')) || [];
-      memos.push({ title, category, memo });
+      memos.push({ title, memo, category, timestamp });
       localStorage.setItem('memos', JSON.stringify(memos));
     }
 
@@ -181,8 +172,8 @@
       const selectedMemo = memos[index];
 
       document.getElementById('titleInput').value = selectedMemo.title;
-      document.getElementById('categorySelect').value = selectedMemo.category;
       document.getElementById('memoInput').value = selectedMemo.memo;
+      document.getElementById('categorySelect').value = selectedMemo.category;
     }
 
     // Load the saved memos when the page loads
