@@ -1,242 +1,172 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Choice</title>
+  <title>drawpost365 - Notes</title>
   <style>
     body {
-      font-family: "MS P明朝", "MS 明朝", serif;
-      background-color: #1a1a1a;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
       margin: 0;
+      padding: 0;
     }
-    #choiceArea {
+    
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
       display: flex;
-      gap: 30px;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      height: 40px;
+    }
+    
+    .login-button {
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    
+    .login-button:hover {
+      background-color: #555;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    
+    .language-switcher {
+      display: flex;
+      justify-content: flex-end;
       margin-bottom: 20px;
     }
-    .choice {
-      padding: 20px 40px;
-      font-size: 18px;
+    
+    .language-switcher button {
+      background-color: #f2f2f2;
+      border: none;
+      padding: 8px 16px;
       cursor: pointer;
-      border-radius: 8px;
-      position: relative;
+      transition: background-color 0.3s;
+    }
+    
+    .language-switcher button.active {
       background-color: #333;
-      border: 2px solid #555;
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
+      color: #fff;
     }
-    .choice.show {
-      opacity: 1;
-      transform: translateY(0);
+    
+    .create-account {
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 4px;
     }
-    .choice:hover {
-      background-color: #555;
-      border-color: #777;
+    
+    .create-account h2 {
+      margin-top: 0;
     }
-    .details {
-      display: none;
-      position: absolute;
-      bottom: -70px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px;
-      background-color: #222;
-      border-radius: 5px;
-      border: 1px solid #444;
-      width: 200px;
-      text-align: left;
-      z-index: 10;
-      font-size: 14px;
-      color: #ddd;
-    }
-    .choice:hover .details {
+    
+    .create-account input {
       display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-    #garbledText {
-      font-size: 14px;
-      color: #777;
+    
+    .create-account button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
     }
-    #messageContainer {
-      display: none;
-      overflow: hidden;
-      transition: height 1s ease;
-    }
-    .messageLine {
-      font-size: 18px;
-      margin-bottom: 5px;
-      transform: translateY(100%);
-      transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-    .messageLine.show {
-      transform: translateY(0);
-    }
-    .messageLine.hide {
-      opacity: 0;
-    }
-    .japaneseTranslation {
-      font-size: 14px;
-      color: #aaa;
-    }
-    #credits {
-      font-size: 12px;
-      color: #777;
-      margin-top: 20px;
-      transform: translateY(100%);
-      transition: transform 1s ease;
-    }
-    #credits.show {
-      transform: translateY(0);
+    
+    .create-account button:hover {
+      background-color: #555;
     }
   </style>
 </head>
 <body>
-  <div id="choiceArea"></div>
-  <div id="garbledText"></div>
-  <button id="showButton" style="display: none;">===</button>
-  <div id="messageContainer"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.0/fingerprint2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <header>
+    <img src="logo.png" alt="Logo" class="logo">
+    <a href="login.html" class="login-button">Login</a>
+  </header>
+  
+  <div class="container">
+    <div class="language-switcher">
+      <button id="en-btn" class="active">English</button>
+      <button id="ja-btn">日本語</button>
+    </div>
+    
+    <div id="en-content">
+      <h1>Welcome to drawpost365</h1>
+      <p>drawpost365 is a simple and intuitive note-taking application that helps you stay organized and productive.</p>
+      <p>With drawpost365, you can easily create and manage your notes, focusing on the content without the distractions of complex features.</p>
+      <p>Try it out today and experience the power of simplicity in note-taking.</p>
+    </div>
+    
+    <div id="ja-content" style="display: none;">
+      <h1>drawpost365へようこそ</h1>
+      <p>drawpost365は、シンプルで直感的なノートアプリです。組織化と生産性の向上に役立ちます。</p>
+      <p>drawpost365では、ノートの作成と管理が簡単です。複雑な機能に邪魔されることなく、コンテンツに集中できます。</p>
+      <p>ぜひ今日お試しください。シンプルなノートテイクの力を体験してください。</p>
+    </div>
+    
+    <div class="create-account">
+      <h2>Create a New Account</h2>
+      <form onsubmit="createAccount(event)">
+        <input type="text" id="usernameInput" placeholder="Username" required>
+        <input type="password" id="passwordInput" placeholder="Password" required>
+        <button type="submit">Create Account</button>
+      </form>
+    </div>
+  </div>
+  
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const choiceArea = document.getElementById("choiceArea");
-      const garbledText = document.getElementById("garbledText");
-      const choices = [
-        { text: "Choice A", details: "You have already made your choice." },
-        { text: "Choice B", details: "You cannot change your selection." }
-      ];
+    const enBtn = document.getElementById('en-btn');
+    const jaBtn = document.getElementById('ja-btn');
+    const enContent = document.getElementById('en-content');
+    const jaContent = document.getElementById('ja-content');
 
-      Fingerprint2.getPromise({
-        excludes: {
-          userAgent: true,
-          language: true,
-          colorDepth: true,
-          pixelRatio: true,
-          timezoneOffset: true,
-          sessionStorage: true,
-          localStorage: true,
-          indexedDb: true,
-          addBehavior: true,
-          openDatabase: true,
-          cpuClass: true,
-          platform: true,
-          doNotTrack: true,
-          canvas: true,
-          webgl: true,
-          webglVendorAndRenderer: true,
-          adBlock: true,
-          hasLiedLanguages: true,
-          hasLiedResolution: true,
-          hasLiedOs: true,
-          hasLiedBrowser: true,
-          touchSupport: true,
-          fonts: true,
-          fontsFlash: true,
-          audio: true,
-          enumerateDevices: true
-        }
-      }).then(components => {
-        const values = components.map(component => component.value);
-        const visitorId = CryptoJS.SHA256(values.join('')).toString();
-
-        if (localStorage.getItem(visitorId)) {
-          document.getElementById("showButton").style.display = "block";
-
-          document.getElementById("showButton").addEventListener("click", () => {
-            document.getElementById("showButton").style.display = "none";
-            
-            const messageContainer = document.getElementById("messageContainer");
-            const messages = [
-              { en: "The path you've chosen is set.", ja: "あなたが選んだ道は定められています。" },
-              { en: "There is no turning back now.", ja: "もう後戻りはできません。" },
-              { en: "Embrace your destiny.", ja: "あなたの運命を受け入れてください。" },
-              { en: "Your fate is sealed.", ja: "あなたの運命は決まっています。" },
-              { en: "No second chances.", ja: "二度目はありません。" },
-              { en: "Walk the path ahead.", ja: "前に進む道を歩んでください。" },
-              { en: "Your choice will ripple through time.", ja: "あなたの選択は、時を越えて波紋を広げるでしょう。" },
-              { en: "Even small decisions shape the future.", ja: "どんなに小さな選択でも、未来に大きな影響を与えます。" },
-              { en: "A single moment can alter fate.", ja: "何気ない瞬間が、運命を変えることがあります。" },
-              { en: "The path you've chosen leads to unknown possibilities.", ja: "あなたが選んだ道は、未知の可能性へと続いています。" },
-              { en: "One choice can change everything.", ja: "たった一つの選択が、全てを変えることがあるのです。" },
-              { en: "Your future hinges on this very moment.", ja: "未来は、今この瞬間の選択にかかっています。" },
-              { en: "Every choice is a crossroads; tread carefully.", ja: "選択は人生の分岐点であり、慎重に進みましょう。" },
-              { en: "Even the smallest choices can have great outcomes.", ja: "小さな選択が、大きな結果を生むことを忘れないでください。" },
-              { en: "Whichever path you choose, it shapes your life.", ja: "どんな道を選んでも、それがあなたの人生を形作ります。" }
-            ];
-
-            messageContainer.innerHTML = "";
-            messageContainer.style.display = "block";
-
-            let currentMessageIndex = 0;
-
-            function showNextMessage() {
-              if (currentMessageIndex >= messages.length) {
-                const credits = document.createElement("div");
-                credits.id = "credits";
-                credits.textContent = "Created by [Othertech C.]";
-                messageContainer.appendChild(credits);
-
-                setTimeout(() => {
-                  credits.classList.add("show");
-                }, 1000); 
-                return;
-              }
-              
-              const msg = messages[currentMessageIndex];
-              const messageLine = document.createElement("div");
-              messageLine.classList.add("messageLine");
-              messageLine.innerHTML = `<div>${msg.en}</div><div class="japaneseTranslation">${msg.ja}</div>`;
-              messageContainer.appendChild(messageLine);
-
-              setTimeout(() => {
-                messageLine.classList.add("show");
-              }, 100);
-
-              setTimeout(() => {
-                messageLine.classList.remove("show");
-                messageLine.classList.add("hide");
-
-                setTimeout(() => {
-                  messageContainer.removeChild(messageLine);
-                  currentMessageIndex++;
-                  showNextMessage();
-                }, 500);
-              }, 7000);
-            }
-
-            showNextMessage();
-          });
-        } else {
-          choices.forEach((choice, index) => {
-            const choiceElement = document.createElement("div");
-            choiceElement.id = `choice${index + 1}`;
-            choiceElement.classList.add("choice");
-            choiceElement.innerHTML = `
-              ${choice.text}
-              <div class="details">${choice.details}</div>
-            `;
-            choiceArea.appendChild(choiceElement);
-
-            setTimeout(() => {
-              choiceElement.classList.add("show");
-            }, 200 * index);
-
-            choiceElement.addEventListener("click", () => {
-              localStorage.setItem(visitorId, choice.text);
-              choiceArea.innerHTML = `<p>You have selected "${choice.text}".</p>`;
-            });
-          });
-        }
-      });
+    enBtn.addEventListener('click', () => {
+      enBtn.classList.add('active');
+      jaBtn.classList.remove('active');
+      enContent.style.display = 'block';
+      jaContent.style.display = 'none';
     });
+
+    jaBtn.addEventListener('click', () => {
+      jaBtn.classList.add('active');
+      enBtn.classList.remove('active');
+      jaContent.style.display = 'block';
+      enContent.style.display = 'none';
+    });
+
+    function createAccount(event) {
+      event.preventDefault();
+      
+      const usernameInput = document.getElementById('usernameInput');
+      const passwordInput = document.getElementById('passwordInput');
+      
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      
+      // ユーザー情報をローカルストレージに保存
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+      
+      // リダイレクトなどの処理を追加する
+    }
   </script>
 </body>
 </html>
