@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>drawpost365 - Memo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      height: 40px;
+    }
+
+    .logout-button {
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .logout-button:hover {
+      background-color: #555;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .memo-list {
+      width: 200px;
+      border-right: 1px solid #ccc;
+      padding-right: 20px;
+    }
+
+    .memo-list ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .memo-list li {
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .memo-list li.personal {
+      background-color: #f2f2f2;
+    }
+
+    .memo-list li.work {
+      background-color: #e6f2ff;
+    }
+
+    .memo-list li.family {
+      background-color: #f2e6ff;
+    }
+
+    .memo-form {
+      flex-grow: 1;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 4px;
+    }
+
+    .memo-form h2 {
+      margin-top: 0;
+    }
+
+    .memo-form input, .memo-form textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .memo-form textarea {
+      height: 300px;
+      resize: vertical;
+    }
+
+    .memo-form button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .memo-form button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo" class="logo">
+    <a href="index.html" class="logout-button">Logout</a>
+  </header>
+
+  <div class="container">
+    <div class="memo-list">
+      <ul id="memoList"></ul>
+    </div>
+
+    <div class="memo-form">
+      <h2>New Memo</h2>
+      <input type="text" id="titleInput" placeholder="Title" required>
+      <select id="categorySelect">
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+        <option value="family">Family</option>
+      </select>
+      <textarea id="memoInput" placeholder="Enter your memo here..." required></textarea>
+      <button onclick="saveAndDisplayMemo()">Save</button>
+    </div>
+  </div>
+
+  <script>
+    function saveAndDisplayMemo() {
+      const titleInput = document.getElementById('titleInput');
+      const categorySelect = document.getElementById('categorySelect');
+      const memoInput = document.getElementById('memoInput');
+
+      const title = titleInput.value;
+      const category = categorySelect.value;
+      const memo = memoInput.value;
+
+      saveMemo(title, category, memo);
+      displayMemos();
+
+      titleInput.value = '';
+      memoInput.value = '';
+    }
+
+    function saveMemo(title, category, memo) {
+      const memos = JSON.parse(localStorage.getItem('memos')) || [];
+      memos.push({ title, category, memo });
+      localStorage.setItem('memos', JSON.stringify(memos));
+    }
+
+    function displayMemos() {
+      const memoList = document.getElementById('memoList');
+      memoList.innerHTML = '';
+
+      const memos = JSON.parse(localStorage.getItem('memos')) || [];
+      memos.forEach((memo, index) => {
+        const li = document.createElement('li');
+        li.textContent = memo.title;
+        li.classList.add(memo.category);
+        li.onclick = () => showMemo(index);
+        memoList.appendChild(li);
+      });
+    }
+
+    function showMemo(index) {
+      const memos = JSON.parse(localStorage.getItem('memos')) || [];
+      const selectedMemo = memos[index];
+
+      document.getElementById('titleInput').value = selectedMemo.title;
+      document.getElementById('categorySelect').value = selectedMemo.category;
+      document.getElementById('memoInput').value = selectedMemo.memo;
+    }
+
+    // Load the saved memos when the page loads
+    window.onload = function() {
+      displayMemos();
+    };
+  </script>
+</body>
+</html>
